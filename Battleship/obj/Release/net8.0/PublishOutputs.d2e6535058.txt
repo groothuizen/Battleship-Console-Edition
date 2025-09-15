@@ -1,0 +1,11 @@
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.exe
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.dll
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.deps.json
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.runtimeconfig.json
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.dll.config
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\Battleship.pdb
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\System.Configuration.ConfigurationManager.dll
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\System.Diagnostics.EventLog.dll
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\System.Security.Cryptography.ProtectedData.dll
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.Messages.dll
+C:\Users\JordanGroothuizenCAD\OneDrive\Project Exports\runtimes\win\lib\net8.0\System.Diagnostics.EventLog.dll
