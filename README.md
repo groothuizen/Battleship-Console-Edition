@@ -2,7 +2,4 @@
 Just a fun and challenging week-long project to hone my C# skills.
 <br/>
 <br/>
-*Sadly comments had to be left to a minimum, due to time restraints.*
-<br/>
-<br/>
 *\~ Jordan Groothuizen*
