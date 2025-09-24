@@ -17,7 +17,14 @@ namespace Battleship.Scenes
             Console.Write(" > ");
             string? name = Console.ReadLine();
 
-            if (name != null && name != String.Empty) Players[(int)CurrentPlayer].Name = name;
+            if (name != null && name != String.Empty)
+            {
+                Players[(int)CurrentPlayer].Name = name;
+            }
+            else
+            {
+                Players[(int)CurrentPlayer].Name = (CurrentPlayer == PlayerTurnStates.PLAYER1) ? "Player 1" : "Player 2";
+            }
 
             if (CurrentPlayer == PlayerTurnStates.PLAYER1)
             {
@@ -55,7 +62,7 @@ namespace Battleship.Scenes
                     }
                 }
 
-                if (y == Height / 2) Console.Write(WhitespaceAround($"{currentPlayer.Name}, please enter your name...", Width - 1));
+                if (y == Height / 2) Console.Write(WhitespaceAround($"{((CurrentPlayer == PlayerTurnStates.PLAYER1) ? "Player 1" : "Player 2")}, please enter your name and press enter...", Width - 1));
 
                 if (y > 1) Console.Write("|");
                 else Console.Write(" ");
