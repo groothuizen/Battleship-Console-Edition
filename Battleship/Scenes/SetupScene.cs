@@ -10,6 +10,14 @@ namespace Battleship.Scenes
 {
     internal class SetupScene : Scene
     {
+        public SetupScene()
+        {
+            foreach (var player in Players)
+            {
+                player.Reset();
+            }
+        }
+
         private string DialogMessage = string.Empty;
 
         internal PlayerTurnStates PlayerTurn = PlayerTurnStates.PLAYER1;
