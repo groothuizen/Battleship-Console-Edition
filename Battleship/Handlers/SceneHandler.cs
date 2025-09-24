@@ -40,6 +40,7 @@ namespace Battleship.Handlers
                     }
                 } else
                 {
+                    Console.WriteLine("\nTerminating program...");
                     Environment.Exit(0);
                 }
             }

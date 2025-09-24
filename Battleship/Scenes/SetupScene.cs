@@ -1,29 +1,16 @@
-﻿using Battleship.GameObjects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Battleship.Enums;
+
 namespace Battleship.Scenes
 {
     internal class SetupScene : Scene
     {
-        public SetupScene() 
-        {
-            Players = [
-                new PlayerObject("Player 1"),
-                new PlayerObject("Player 2")
-            ];
-        }
-
         private string DialogMessage = string.Empty;
-
-        internal enum PlayerTurnStates
-        {
-            PLAYER1,
-            PLAYER2
-        }
 
         internal PlayerTurnStates PlayerTurn = PlayerTurnStates.PLAYER1;
 
@@ -134,13 +121,17 @@ namespace Battleship.Scenes
                             {
                                 // ===== Ship Symbol =====
 
-                                if (CurrentPlayer.Board.Values[x / GridGapX - 1, y / GridGapY - 1] == 1)
+                                if (CurrentPlayer.Board.Coords[x / GridGapX - 1, y / GridGapY - 1] == BoardStatuses.OCCUPIED)
                                 {
                                     var ship = CurrentPlayer.Fleet.FindShipFromPosition(x / GridGapX - 1, y / GridGapY - 1);
 
                                     if (ship != null)
                                     {
                                         Console.Write(ship.Symbol);
+                                    }
+                                    else
+                                    {
+                                        Console.Write("?");
                                     }
                                 }
                                 else
@@ -149,7 +140,7 @@ namespace Battleship.Scenes
 
                                     switch (CurrentPlayer.Fleet.Rotation)
                                     {
-                                        case 0:
+                                        case Rotations.HORIZONTAL:
                                             if (Cursor.Position[1] + 1 == y / GridGapY)
                                             {
                                                 if
@@ -171,7 +162,7 @@ namespace Battleship.Scenes
                                             }
                                             else Console.Write("~");
                                             break;
-                                        case 1:
+                                        case Rotations.VERTICAL:
                                             if (Cursor.Position[0] + 1 == x / GridGapX)
                                             {
                                                 if
@@ -208,7 +199,7 @@ namespace Battleship.Scenes
                             {
                                 switch (CurrentPlayer.Fleet.Rotation)
                                 {
-                                    case 0:
+                                    case Rotations.HORIZONTAL:
                                         if (Cursor.Position[1] + 1 == y / GridGapY)
                                         {
                                             if
@@ -226,7 +217,7 @@ namespace Battleship.Scenes
                                         }
                                         else Console.Write(" ");
                                         break;
-                                    case 1:
+                                    case Rotations.VERTICAL:
                                         if (Cursor.Position[0] + 1 == Math.Round(new decimal(x) / GridGapX))
                                         {
                                             if

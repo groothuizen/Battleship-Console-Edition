@@ -30,7 +30,7 @@ namespace Battleship.Scenes
                     switch (Selected)
                     {
                         case Options.START:
-                            RequestedScene = new SetupScene();
+                            RequestedScene = new SettingsScene();
                             return;
                         case Options.EXIT:
                             Terminate();

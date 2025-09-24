@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Battleship.Enums;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Battleship.Enums;
 
 namespace Battleship.Scenes
 {
@@ -18,12 +18,6 @@ namespace Battleship.Scenes
         }
 
         private string DialogMessage = string.Empty;
-
-        internal enum PlayerTurnStates
-        {
-            PLAYER1,
-            PLAYER2
-        }
 
         internal PlayerTurnStates PlayerTurn = PlayerTurnStates.PLAYER1;
 
@@ -51,22 +45,22 @@ namespace Battleship.Scenes
                 case ConsoleKey.A:
                     currentPlayer.Attack(targetPlayer, Cursor.Position[0], Cursor.Position[1]);
 
-                    switch (currentPlayer.HitStatus)
+                    switch (currentPlayer.AttackStatus)
                     {
-                        case HitStatuses.HIT:
+                        case AttackStatuses.HIT:
                             Draw();
                             Thread.Sleep(2000);
                             break;
-                        case HitStatuses.SUNK:
+                        case AttackStatuses.SUNK:
                             Draw();
-                            Thread.Sleep(3000);
+                            Thread.Sleep(2000);
                             break;
-                        case HitStatuses.MISS:
+                        case AttackStatuses.MISS:
                             Draw();
                             Thread.Sleep(2000);
                             SwitchPlayers();
                             break;
-                        case HitStatuses.ERROR:
+                        case AttackStatuses.ERROR:
                             Draw();
                             Thread.Sleep(1000);
                             break;
@@ -77,7 +71,7 @@ namespace Battleship.Scenes
                         RequestedScene = new WinScene();
                     }
 
-                    currentPlayer.HitStatus = HitStatuses.STANDBY;
+                    currentPlayer.AttackStatus = AttackStatuses.STANDBY;
                     break;
             }
         }
@@ -114,12 +108,12 @@ namespace Battleship.Scenes
                             {
                                 // ===== Ship Symbol =====
 
-                                switch (targetPlayer.Board.Values[x / GridGapX - 1, y / GridGapY - 1])
+                                switch (targetPlayer.Board.Coords[x / GridGapX - 1, y / GridGapY - 1])
                                 {
-                                    case 2:
+                                    case BoardStatuses.GUESSED:
                                         Console.Write("O");
                                         break;
-                                    case 3:
+                                    case BoardStatuses.GUESSED_AND_HIT:
                                         Console.Write("X");
                                         break;
                                     default:
@@ -187,21 +181,21 @@ namespace Battleship.Scenes
                                 Console.Write(WhitespaceAround($"Ships Sunk: {targetPlayer.SunkenShips}", DialogWidth));
                                 break;
                             case 5:
-                                switch (currentPlayer.HitStatus)
+                                switch (currentPlayer.AttackStatus)
                                 {
-                                    case HitStatuses.STANDBY:
+                                    case AttackStatuses.STANDBY:
                                         DialogMessage = "Pick a spot to attack!";
                                         break;
-                                    case HitStatuses.MISS:
+                                    case AttackStatuses.MISS:
                                         DialogMessage = "YOU MISSED!";
                                         break;
-                                    case HitStatuses.HIT:
+                                    case AttackStatuses.HIT:
                                         DialogMessage = "A DIRECT HIT!";
                                         break;
-                                    case HitStatuses.SUNK:
+                                    case AttackStatuses.SUNK:
                                         DialogMessage = "A SHIP HAS SUNK!";
                                         break;
-                                    case HitStatuses.ERROR:
+                                    case AttackStatuses.ERROR:
                                         DialogMessage = "That point has already been hit!";
                                         break;
                                 }

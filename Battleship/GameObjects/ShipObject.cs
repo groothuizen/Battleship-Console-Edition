@@ -21,15 +21,23 @@ namespace Battleship.GameObjects
 
         public bool IsPlaced = false;
 
+        /// <summary>
+        /// The amount of hits that the ship can take. intial value is identical to the ship's size.
+        /// </summary>
         public int Health { get; set; }
         public int Size { get; }
 
         public string Name { get; private set; }
+
+        /// <summary>
+        /// The symbol that gets drawn to the console.
+        /// </summary>
         public string Symbol { get; }
 
         /// <summary>
-        /// [0] = x,
-        /// [1] = y
+        /// [0] = x <br/>
+        /// [1] = y <br/>
+        /// 1 = occupied
         /// </summary>
         public int[,] Positions { get; set; }
     }

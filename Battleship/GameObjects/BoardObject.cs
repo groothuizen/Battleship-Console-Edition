@@ -4,33 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Battleship.Enums;
+
 namespace Battleship.GameObjects
 {
     public class BoardObject : GameObject
     {
         public BoardObject()
         {
-            Values = new int[Grid, Grid];
+            Coords = new BoardStatuses[Grid, Grid];
         }
 
-        public int[,] Values { get; set; }
+        public BoardStatuses[,] Coords { get; set; }
 
         /// <summary>
-        /// Checks if a space on the board is empty or occupied, assigns a value and then returns true, otherwise returns false.
+        /// Assesses if a space on the board is empty or occupied, assigns enum value: GUESSED or GUESSED_AND_HIT.
         /// </summary>
-        /// <param name="x">x coordinate on the board</param>
-        /// <param name="y">y coordinate on the board</param>
-        /// <returns></returns>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The y coordinate on the board</param>
+        /// <param name="flipped">Returns true or false, depending on if the coordinate value was flipped or not</param>
         public void FlipValue(int x, int y, out bool flipped)
         {
-            switch (Values[x, y])
+            switch (Coords[x, y])
             {
-                case 0:
-                    Values[x, y] = 2;
+                case BoardStatuses.EMPTY:
+                    Coords[x, y] = BoardStatuses.GUESSED;
                     flipped = true;
                     break;
-                case 1:
-                    Values[x, y] = 3;
+                case BoardStatuses.OCCUPIED:
+                    Coords[x, y] = BoardStatuses.GUESSED_AND_HIT;
                     flipped = true;
                     break;
                 default:

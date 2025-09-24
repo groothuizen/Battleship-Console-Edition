@@ -4,49 +4,64 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Battleship.Enums;
+
 namespace Battleship.GameObjects
 {
+    /// <summary>
+    /// Includes a collection of Ship objects and some useful methods.
+    /// </summary>
     public class FleetObject : GameObject
     {
         public FleetObject() 
         {
             Ships = new ShipObject[5]
             {
-                new(size: 2, "Destroyer", "1"),
-                new(size: 3, "Submarine", "2"),
-                new(size: 3, "Cruiser", "3"),
-                new(size: 3, "Battleship", "4"),
-                new(size: 4, "Aircraft Carrier", "5")
+                new(size: 2, name: "Destroyer", symbol: "1"),
+                new(size: 3, name: "Submarine", symbol: "2"),
+                new(size: 3, name: "Cruiser", symbol: "3"),
+                new(size: 3, name: "Battleship", symbol: "4"),
+                new(size: 4, name: "Aircraft Carrier", symbol: "5")
             };
         }
 
         public ShipObject[] Ships { get; private set; }
+
+        /// <summary>
+        /// A pointer for the Ship object List.
+        /// </summary>
         public int ShipPointer { get; private set; } = 0;
 
         /// <summary>
-        /// 0 for horizontal or 1 for vertical
+        /// The current rotation state from the enum: "Rotations". <br/>
+        /// <br/>
+        /// Default: "Rotations.HORIZONTAL".
         /// </summary>
-        public int Rotation { get; set; } = 0;
+        public Rotations Rotation { get; set; } = Rotations.HORIZONTAL;
 
-        public void Rotate()
-        {
-            if (Rotation == 0)
-            {
-                Rotation = 1;
-            }
-            else
-            {
-                Rotation = 0;
-            }
-        }
+        /// <summary>
+        /// Rotates the ship by changing the value of the Rotation property.
+        /// </summary>
+        public Rotations Rotate() => (Rotation == Rotations.HORIZONTAL) ? Rotation = Rotations.VERTICAL : Rotation = Rotations.HORIZONTAL;
 
         public ShipObject GetCurrentShip() => Ships[ShipPointer];
 
+        /// <summary>
+        /// Assess if a ship is currently occupying a given coordinate.
+        /// </summary>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The y coordinate on the board</param>
+        /// <returns>ShipObject</returns>
         public ShipObject? FindShipFromPosition(int x, int y)
         {
             return Ships.SingleOrDefault(ship => ship.Positions[x, y] == 1);
         }
 
+        /// <summary>
+        /// Increments the value of the ship pointer. <br/>
+        /// <br/>
+        /// Resets to the index value of the first unplaced ship, when the value exceeds the length of the ships List.
+        /// </summary>
         public void ShiftShipPointer()
         {
             for (int i = 1; i < Ships.Length + 1; i++)
@@ -70,20 +85,27 @@ namespace Battleship.GameObjects
             }
         }
 
+        /// <summary>
+        /// Checks if a ship is inbounds, according to size and rotation.
+        /// </summary>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The y coordinate on the board</param>
+        /// <returns>true or false</returns>
+        /// <exception cref="InvalidDataException"></exception>
         public bool ShipInBounds(int x, int y)
         {
             if (x >= 0 && x < Grid && y >= 0 && y < Grid)
             {
                 switch (Rotation)
                 {
-                    case 0:
+                    case Rotations.HORIZONTAL:
                         if (x + Ships[ShipPointer].Size > Grid) return false;
                         else return true;
-                    case 1:
+                    case Rotations.VERTICAL:
                         if (y + Ships[ShipPointer].Size > Grid) return false;
                         else return true;
                     default:
-                        throw new InvalidDataException($"Invalid data at ShipInBounds(): \"{Rotation}\" is not a valid value, expected \"horizontal\" or \"vertical\"");
+                        throw new InvalidDataException($"Invalid data at ShipInBounds(): \"{Rotation}\" is not a valid value, expected \"Rotations.HORIZONTAL\" or \"Rotations.VERTICAL\"");
                 }
             }
             else

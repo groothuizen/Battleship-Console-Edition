@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Battleship.Enums;
+
 namespace Battleship.GameObjects
 {
     public class CursorObject : GameObject
@@ -16,6 +18,10 @@ namespace Battleship.GameObjects
         /// </summary>
         public int[] Position { get; } = new int[2] { 1, 1 };
 
+        /// <summary>
+        /// Updates the cursor's position by 1 in a given direction, but prevents the cursor from going out of bounds.
+        /// </summary>
+        /// <param name="direction"></param>
         public void Move(string direction)
         {
             switch (direction)
@@ -35,24 +41,32 @@ namespace Battleship.GameObjects
             }
         }
 
-        public void PushCursorInBounds(int axis, int length)
+        /// <summary>
+        /// Pushes the cursor inbounds by a given length. <br/>
+        /// <br/>
+        /// Since ships are drawn from top to bottom or left to right, it will only check below and on the right side of the cursor's position.
+        /// </summary>
+        /// <param name="axis">The axis to assess</param>
+        /// <param name="length">The hypothetical length of the cursor to assess</param>
+        /// <exception cref="InvalidDataException"></exception>
+        public void PushCursorInBounds(Rotations axis, int length)
         {
             switch (axis)
             {
-                case 0:
+                case Rotations.HORIZONTAL:
                     if (Position[0] + length > Grid)
                     {
                         Position[0] -= (Position[0] + length - Grid);
                     }
                     break;
-                case 1:
+                case Rotations.VERTICAL:
                     if (Position[1] + length > Grid)
                     {
                         Position[1] -= (Position[1] + length - Grid);
                     }
                     break;
                 default:
-                    throw new InvalidDataException($"Invalid data at PushCursorInBounds(): \"{axis}\" is not a valid value, expected \"0\" for x axis or \"1\" for y axis");
+                    throw new InvalidDataException($"Invalid data at PushCursorInBounds(): \"{axis}\" is not a valid value, expected \"Rotations.HORIZONTAL\" or \"Rotations.VERTICAL\"");
             }
         }
     }

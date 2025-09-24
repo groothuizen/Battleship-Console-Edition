@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Battleship.Enums
 {
-    public enum HitStatuses
+    public enum BoardStatuses
     {
-        STANDBY,
-        MISS,
-        HIT,
-        SUNK,
-        ERROR
+        EMPTY,
+        OCCUPIED,
+        GUESSED,
+        GUESSED_AND_HIT
     }
 }

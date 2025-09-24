@@ -15,8 +15,12 @@ namespace Battleship.GameObjects
             Name = name;
         }
 
-        public HitStatuses HitStatus { get; set; } = HitStatuses.STANDBY;
-        public string HitStatusMessage = String.Empty;
+        /// <summary>
+        /// The current status of the attack from the enum: "AttackStatuses". <br/>
+        /// <br/>
+        /// Default: AttackStatuses.STANDBY
+        /// </summary>
+        public AttackStatuses AttackStatus { get; set; } = AttackStatuses.STANDBY;
 
         public string Name;
         public int Points = 0;
@@ -25,19 +29,30 @@ namespace Battleship.GameObjects
         public BoardObject Board { get; private set; } = new();
         public FleetObject Fleet { get; private set; } = new();
 
+        /// <summary>
+        /// Keeps track of the amount of ships placed.
+        /// </summary>
         public int ShipsPlaced = 0;
 
+        /// <summary>
+        /// Attacks a target player and flips values on their board accordingly. <br/>
+        /// <br/>
+        /// Alters the status of the attack after assessement, example: "AttackStatuses.HIT".
+        /// </summary>
+        /// <param name="targetPlayer">The player that is being attacked</param>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The y coordinate on the board</param>
         public void Attack(PlayerObject targetPlayer,int x, int y)
         {
             targetPlayer.Board.FlipValue(x, y, out bool flipped);
             if (flipped)
             {
-                if (targetPlayer.Board.Values[x, y] == 3)
+                if (targetPlayer.Board.Coords[x, y] == BoardStatuses.GUESSED_AND_HIT)
                 {
                     var ship = targetPlayer.Fleet.FindShipFromPosition(x, y);
                     if (ship != null)
                     {
-                        HitStatus = HitStatuses.HIT;
+                        AttackStatus = AttackStatuses.HIT;
 
                         ship.Positions[x, y] = 3;
                         ship.Health--;
@@ -45,46 +60,57 @@ namespace Battleship.GameObjects
                         {
                             Points++;
                             targetPlayer.SunkenShips++;
-                            HitStatus = HitStatuses.SUNK;
+                            AttackStatus = AttackStatuses.SUNK;
                         }
                     }
                 }
-                else if (targetPlayer.Board.Values[x, y] == 2)
+                else if (targetPlayer.Board.Coords[x, y] == BoardStatuses.GUESSED)
                 {
-                    HitStatus = HitStatuses.MISS;
+                    AttackStatus = AttackStatuses.MISS;
                 }
             }
-            else HitStatus = HitStatuses.ERROR;
+            else AttackStatus = AttackStatuses.ERROR;
         }
 
+        /// <summary>
+        /// Checks if the player has won.
+        /// </summary>
+        /// <returns>true or false</returns>
         public bool HasWon()
         {
             if (Points >= Fleet.Ships.Length) return true;
             else return false;
         }
 
+        /// <summary>
+        /// Assess if a ship fits in the given position and then places the ship in the corresponding positions, according to the rotation and size of the ship.
+        /// </summary>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The x coordinate on the board</param>
+        /// <exception cref="InvalidDataException"></exception>
         public void PlaceShip(int x, int y)
         {
             switch (Fleet.Rotation)
             {
-                case 0:
+                case Rotations.HORIZONTAL:
                     if (ShipFits(x, y))
                     {
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
-                            Board.Values[x + i, y] = 1;
+                            Board.Coords[x + i, y] = BoardStatuses.OCCUPIED;
                             Fleet.GetCurrentShip().Positions[x + i, y] = 1;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
                         ShipsPlaced++;
+
                     }
                     break;
-                case 1:
+                case Rotations.VERTICAL:
                     if (ShipFits(x, y))
                     {
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
-                            Board.Values[x, y + i] = 1;
+                            Board.Coords[x, y + i] = BoardStatuses.OCCUPIED;
                             Fleet.GetCurrentShip().Positions[x + i, y] = 1;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
@@ -92,21 +118,28 @@ namespace Battleship.GameObjects
                     }
                     break;
                 default:
-                    throw new InvalidDataException($"Invalid data at PlaceShip(): \"{Fleet.Rotation}\" is not a valid value, expected \"0\" for horizontal or \"1\" for vertical");
+                    throw new InvalidDataException($"Invalid data at PlaceShip(): \"{Fleet.Rotation}\" is not a valid value, expected \"Rotations.HORIZONTAL\" or \"Rotations.VERTICAL\"");
             }
         }
 
+        /// <summary>
+        /// Assess if a ship fits in the given position and then places the ship in the corresponding positions, according to the rotation and size of the ship.
+        /// </summary>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The x coordinate on the board</param>
+        /// <param name="placed">returns true or false, depending on if the ship was successfully placed or not.</param>
+        /// <exception cref="InvalidDataException"></exception>
         public void PlaceShip(int x, int y, out bool placed)
         {
             placed = false;
             switch (Fleet.Rotation)
             {
-                case 0:
+                case Rotations.HORIZONTAL:
                     if (ShipFits(x, y))
                     {
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
-                            Board.Values[x + i, y] = 1;
+                            Board.Coords[x + i, y] = BoardStatuses.OCCUPIED;
                             Fleet.GetCurrentShip().Positions[x + i, y] = 1;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
@@ -114,12 +147,12 @@ namespace Battleship.GameObjects
                         placed = true;
                     }
                     break;
-                case 1:
+                case Rotations.VERTICAL:
                     if (ShipFits(x, y))
                     {
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
-                            Board.Values[x, y + i] = 1;
+                            Board.Coords[x, y + i] = BoardStatuses.OCCUPIED;
                             Fleet.GetCurrentShip().Positions[x, y + i] = 1;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
@@ -128,38 +161,48 @@ namespace Battleship.GameObjects
                     }
                     break;
                 default:
-                    throw new InvalidDataException($"Invalid data at PlaceShip(): \"{Fleet.Rotation}\" is not a valid value, expected \"0\" for horizontal or \"1\" for vertical");
+                    throw new InvalidDataException($"Invalid data at PlaceShip(): \"{Fleet.Rotation}\" is not a valid value, expected \"Rotations.HORIZONTAL\" or \"Rotations.VERTICAL\"");
             }
         }
 
+        /// <summary>
+        /// Assess if a ship fits in the given position, according to the rotation and size of the ship.
+        /// </summary>
+        /// <param name="x">The x coordinate on the board</param>
+        /// <param name="y">The x coordinate on the board</param>
+        /// <returns>true or false</returns>
+        /// <exception cref="InvalidDataException"></exception>
         public bool ShipFits(int x, int y)
         {
             switch (Fleet.Rotation)
             {
-                case 0:
+                case Rotations.HORIZONTAL:
                     for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                     {
-                        if (Board.Values[x + i, y] == 1)
+                        if (Board.Coords[x + i, y] == BoardStatuses.OCCUPIED)
                         {
                             return false;
                         }
                     }
                     break;
-                case 1:
+                case Rotations.VERTICAL:
                     for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                     {
-                        if (Board.Values[x, y + i] == 1)
+                        if (Board.Coords[x, y + i] == BoardStatuses.OCCUPIED)
                         {
                             return false;
                         }
                     }
                     break;
                 default:
-                    throw new InvalidDataException($"Invalid data at ShipFits(): \"{Fleet.Rotation}\" is not a valid value, expected \"0\" for horizontal or \"1\" for vertical");
+                    throw new InvalidDataException($"Invalid data at ShipFits(): \"{Fleet.Rotation}\" is not a valid value, expected \"Rotations.HORIZONTAL\" or \"Rotations.VERTICAL\"");
             }
             return true;
         }
 
+        /// <summary>
+        /// Resets the player to the default state.
+        /// </summary>
         public void Reset()
         {
             Board = new();

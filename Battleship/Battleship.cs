@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 
-using Battleship.GameObjects;
+using SimpleLog;
+
 using Battleship.Handlers;
 using Battleship.Scenes;
 
@@ -29,7 +28,7 @@ namespace Battleship
                 } while (Console.KeyAvailable); // Prevents pauses between inputs
             } while (isAlive);
 
-            Console.WriteLine("Terminating program...");
+            Console.WriteLine("\nTerminating program...");
 
         }
         
