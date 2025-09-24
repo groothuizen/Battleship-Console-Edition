@@ -45,6 +45,12 @@ namespace Battleship.Scenes
                 case ConsoleKey.A:
                     currentPlayer.Attack(targetPlayer, Cursor.Position[0], Cursor.Position[1]);
 
+                    Log.Logger.Information
+                     (
+                        "#ATTACKING: attacking player: {attackingPlayer} attacked -> target player: {targetPlayer} at position: {cursorPosition} -> outcome: {attackStatus}", 
+                        currentPlayer.Name, targetPlayer.Name, Cursor.Position, currentPlayer.AttackStatus
+                     );
+
                     switch (currentPlayer.AttackStatus)
                     {
                         case AttackStatuses.HIT:

@@ -14,6 +14,8 @@ namespace Battleship
     {
         public static void Main(string[] args)
         {
+            LogService.StartSerilog();
+
             SceneHandler sceneHandler = new();
 
             sceneHandler.Start(new TitleScene());
@@ -29,7 +31,6 @@ namespace Battleship
             } while (isAlive);
 
             Console.WriteLine("\nTerminating program...");
-
         }
         
     }

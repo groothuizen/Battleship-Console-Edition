@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36414.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battleship", "Battleship\Battleship.csproj", "{D28AEAAF-56B2-420C-8049-2863096F1A3D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLog", "SimpleLog\SimpleLog.csproj", "{45A0A537-6024-444D-BECA-F1AC7B888238}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D28AEAAF-56B2-420C-8049-2863096F1A3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D28AEAAF-56B2-420C-8049-2863096F1A3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D28AEAAF-56B2-420C-8049-2863096F1A3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45A0A537-6024-444D-BECA-F1AC7B888238}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45A0A537-6024-444D-BECA-F1AC7B888238}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45A0A537-6024-444D-BECA-F1AC7B888238}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45A0A537-6024-444D-BECA-F1AC7B888238}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
