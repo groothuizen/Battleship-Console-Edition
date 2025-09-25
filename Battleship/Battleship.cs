@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using SimpleLog;
+﻿using SimpleLog;
 
 using Battleship.Handlers;
 using Battleship.Scenes;

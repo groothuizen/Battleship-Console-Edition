@@ -1,13 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Serilog;
-using Serilog.Formatting.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace SimpleLog.Builders
 {
@@ -37,7 +29,7 @@ namespace SimpleLog.Builders
         /// <summary>
         /// Builds a Serilog Logger from the specified configuration file, default path: "(base path)\appsettings.json".
         /// </summary>
-        public ILogger Build() // maybe include a way to specify the json file's name
+        public ILogger Build()
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath((_basePath ?? Directory.GetCurrentDirectory()))

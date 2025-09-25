@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Battleship.GameObjects;
+﻿using Battleship.GameObjects;
 
 namespace Battleship.Scenes
 {
@@ -28,7 +22,7 @@ namespace Battleship.Scenes
             }
             else
             {
-                Serilog.Log.Error("#WIN no winner could be found...");
+                Serilog.Log.Error("#RESULT no winner could be found...");
             }
         }
 
