@@ -53,7 +53,7 @@ namespace SimpleLog.Builders
 
             var logMethodsSection = simpleLogSection.GetSection("LogMethods");
 
-            if (logMethodsSection.GetValue<bool>("Console.Enabled")) logger.WriteTo.Console();
+            if (logMethodsSection.GetValue<bool>("Console:Enabled")) logger.WriteTo.Console();
 
             if (logMethodsSection.GetValue<bool>("TXT:Enabled"))
             {
