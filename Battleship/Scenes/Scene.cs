@@ -17,7 +17,7 @@ namespace Battleship.Scenes
     {
         public Scene() 
         {
-            Grid = ConfigHandler.GetInt("Grid");
+            Grid = ConfigHandler.GetValue<int>("Board:Grid");
             GridGapX = Grid;
             GridGapY = Grid / 2;
             Width = (Grid + 1) * GridGapX;

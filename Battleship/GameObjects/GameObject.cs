@@ -18,7 +18,7 @@ namespace Battleship.GameObjects
     {
         public GameObject() 
         {
-            Grid = ConfigHandler.GetInt("Grid");
+            Grid = ConfigHandler.GetValue<int>("Board:Grid");
         }
 
         internal ConfigHandler ConfigHandler = new();

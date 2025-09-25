@@ -1,49 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 
 namespace Battleship.Handlers
 {
     public class ConfigHandler
     {
         /// <summary>
-        /// Gets a value from App.config and parses it as an integer.
+        /// Call as little as possible!
         /// </summary>
-        /// <param name="key">The config key to look for.</param>
-        /// <returns>int value</returns>
-        /// <exception cref="Exception"></exception>
-        public int GetInt(string key)
-        {
-            bool isParsed = int.TryParse(ConfigurationManager.AppSettings[key], out int parsedValue);
-            if (isParsed)
-            {
-                return parsedValue;
-            } 
-            else
-            {
-                throw new Exception($"int.TryParse() failed at ConfigHandler.GetInt() on key: {key}");
+        private IConfiguration Config {
+            get {
+                try
+                {
+                    return new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile(@"appsettings.json", optional: false, reloadOnChange: true)
+                        .Build();
+                }
+                catch (FileNotFoundException)
+                {
+                    throw new FileNotFoundException(@"File could not be found at ConfigHandler.ConfigFile.get(): \appsettings.json could not be read.");
+                }
             }
         }
 
         /// <summary>
-        /// Gets a string value from App.config.
+        /// Gets the value with the specified key and converts it to type T.
         /// </summary>
-        /// <param name="key">The config key to look for.</param>
-        /// <returns>string value</returns>
-        /// <exception cref="Exception"></exception>
-        public string GetString(string key)
+        /// <param name="key">The json key to look for.</param>
+        /// <returns>integer value</returns>
+        /// <exception cref="NullReferenceException"></exception>
+        public T GetValue<T>(string key)
         {
-            string? configValue = ConfigurationManager.AppSettings[key];
-            if (configValue != null)
+            try 
             {
-                return configValue;
+                return Config.GetSection("Battleship").GetValue<T>(key)!;
             }
-            else
+            catch (NullReferenceException)
             {
-                throw new NullReferenceException($"Unexpected null reference at ConfigHandler.GetString() on key: {key}, expected a string value...");
+                throw new NullReferenceException($"Unexpected null reference at ConfigHandler.GetInt(): \\appsettings.json does not contain key: \"{key}\"");
             }
         }
     }
