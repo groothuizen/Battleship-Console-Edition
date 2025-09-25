@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using Serilog;
+using Serilog.Formatting.Json;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-
-using Microsoft.Extensions.Configuration;
-
-using Serilog;
-using Serilog.Formatting.Json;
 
 namespace SimpleLog.Builders
 {
@@ -26,7 +26,7 @@ namespace SimpleLog.Builders
         }
 
         /// <summary>
-        /// Sets the path from the base path where the configuration file is located.
+        /// Sets the path from the base path to where the configuration file is located.
         /// </summary>
         public SerilogLoggerBuilder SetConfigFile(string configPath)
         {
@@ -35,7 +35,7 @@ namespace SimpleLog.Builders
         }
 
         /// <summary>
-        /// Builds a Serilog Logger from the specified configuration file, default path: "(base path)\settings\simplelogsettings.json".
+        /// Builds a Serilog Logger from the specified configuration file, default path: "(base path)\appsettings.json".
         /// </summary>
         public ILogger Build() // maybe include a way to specify the json file's name
         {
@@ -45,35 +45,10 @@ namespace SimpleLog.Builders
                 //.AddJsonFile($@"simplelogsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
                 .Build();
 
-            var logger = new LoggerConfiguration()
+            return new LoggerConfiguration()
                 .ReadFrom.Configuration(config)
-                .Enrich.FromLogContext();
-
-            var simpleLogSection = config.GetSection("SimpleLog");
-
-            var logMethodsSection = simpleLogSection.GetSection("LogMethods");
-
-            if (logMethodsSection.GetValue<bool>("Console:Enabled")) logger.WriteTo.Console();
-
-            if (logMethodsSection.GetValue<bool>("TXT:Enabled"))
-            {
-                string? path = logMethodsSection.GetValue<string?>("TXT:Path");
-                if (path != null)
-                {
-                    logger.WriteTo.File(path);
-                }
-            }
-
-            if (logMethodsSection.GetValue<bool>("JSON:Enabled"))
-            {
-                string? path = logMethodsSection.GetValue<string?>("JSON:Path");
-                if (path != null)
-                {
-                    logger.WriteTo.File(new JsonFormatter(), path);
-                }
-            }
-
-            return logger.CreateLogger();
+                .Enrich.FromLogContext()
+                .CreateLogger();
         }
     }
 }
