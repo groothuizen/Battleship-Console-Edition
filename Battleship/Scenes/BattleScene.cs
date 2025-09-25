@@ -1,10 +1,10 @@
-﻿using Battleship.Enums;
-using Serilog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using Battleship.Enums;
 
 namespace Battleship.Scenes
 {
@@ -12,9 +12,10 @@ namespace Battleship.Scenes
     {
         public BattleScene() 
         {
-            Cursor.Symbol = "";
             Cursor.Position[0] = 0;
             Cursor.Position[1] = 0;
+
+            Serilog.Log.Information("#BATTLE starting the battle scene...");
         }
 
         private string DialogMessage = string.Empty;
@@ -45,11 +46,11 @@ namespace Battleship.Scenes
                 case ConsoleKey.A:
                     currentPlayer.Attack(targetPlayer, Cursor.Position[0], Cursor.Position[1]);
 
-                    Log.Logger.Information
-                     (
-                        "#ATTACKING: attacking player: {attackingPlayer} attacked -> target player: {targetPlayer} at position: {cursorPosition} -> outcome: {attackStatus}", 
+                    Serilog.Log.Logger.Information
+                    (
+                        "#BATTLE: player: {attackingPlayerName} attacked -> target player: {targetPlayerName} at position: {cursorPosition} -> outcome: {attackStatus}",
                         currentPlayer.Name, targetPlayer.Name, Cursor.Position, currentPlayer.AttackStatus
-                     );
+                    );
 
                     switch (currentPlayer.AttackStatus)
                     {
@@ -74,7 +75,12 @@ namespace Battleship.Scenes
 
                     if (currentPlayer.HasWon())
                     {
-                        RequestedScene = new WinScene();
+                        Serilog.Log.Information
+                        (
+                            "#BATTLE {playerName} has sunk all of {targetPlayer}'s ships!", 
+                            currentPlayer.Name, targetPlayer.Name
+                        );
+                        RequestedScene = new ResultScene();
                     }
 
                     currentPlayer.AttackStatus = AttackStatuses.STANDBY;

@@ -17,11 +17,11 @@ namespace Battleship.GameObjects
         {
             Ships = new ShipObject[5]
             {
-                new(size: 2, name: "Destroyer", symbol: "1"),
-                new(size: 3, name: "Submarine", symbol: "2"),
-                new(size: 3, name: "Cruiser", symbol: "3"),
-                new(size: 3, name: "Battleship", symbol: "4"),
-                new(size: 4, name: "Aircraft Carrier", symbol: "5")
+                new(size: 2, name: "Destroyer", symbol: '1'),
+                new(size: 3, name: "Submarine", symbol: '2'),
+                new(size: 3, name: "Cruiser", symbol: '3'),
+                new(size: 3, name: "Battleship", symbol: '4'),
+                new(size: 4, name: "Aircraft Carrier", symbol: '5')
             };
         }
 
@@ -54,7 +54,7 @@ namespace Battleship.GameObjects
         /// <returns>ShipObject</returns>
         public ShipObject? FindShipFromPosition(int x, int y)
         {
-            return Ships.SingleOrDefault(ship => ship.Positions[x, y] == 1);
+            return Ships.SingleOrDefault(ship => ship.Coords[x, y] == BoardStatuses.OCCUPIED);
         }
 
         /// <summary>

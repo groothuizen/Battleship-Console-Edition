@@ -10,8 +10,6 @@ namespace Battleship.GameObjects
 {
     public class CursorObject : GameObject
     {
-        public string Symbol = String.Empty;
-
         /// <summary>
         /// [0] = x,
         /// [1] = y

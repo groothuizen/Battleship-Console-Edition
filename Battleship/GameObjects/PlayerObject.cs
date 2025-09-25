@@ -54,8 +54,9 @@ namespace Battleship.GameObjects
                     {
                         AttackStatus = AttackStatuses.HIT;
 
-                        ship.Positions[x, y] = 3;
+                        ship.Coords[x, y] = BoardStatuses.GUESSED_AND_HIT;
                         ship.Health--;
+
                         if (ship.Health == 0)
                         {
                             Points++;
@@ -98,7 +99,7 @@ namespace Battleship.GameObjects
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
                             Board.Coords[x + i, y] = BoardStatuses.OCCUPIED;
-                            Fleet.GetCurrentShip().Positions[x + i, y] = 1;
+                            Fleet.GetCurrentShip().Coords[x + i, y] = BoardStatuses.OCCUPIED;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
                         ShipsPlaced++;
@@ -111,7 +112,7 @@ namespace Battleship.GameObjects
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
                             Board.Coords[x, y + i] = BoardStatuses.OCCUPIED;
-                            Fleet.GetCurrentShip().Positions[x + i, y] = 1;
+                            Fleet.GetCurrentShip().Coords[x + i, y] = BoardStatuses.OCCUPIED;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
                         ShipsPlaced++;
@@ -140,7 +141,7 @@ namespace Battleship.GameObjects
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
                             Board.Coords[x + i, y] = BoardStatuses.OCCUPIED;
-                            Fleet.GetCurrentShip().Positions[x + i, y] = 1;
+                            Fleet.GetCurrentShip().Coords[x + i, y] = BoardStatuses.OCCUPIED;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
                         ShipsPlaced++;
@@ -153,7 +154,7 @@ namespace Battleship.GameObjects
                         for (int i = 0; i < Fleet.GetCurrentShip().Size; i++)
                         {
                             Board.Coords[x, y + i] = BoardStatuses.OCCUPIED;
-                            Fleet.GetCurrentShip().Positions[x, y + i] = 1;
+                            Fleet.GetCurrentShip().Coords[x, y + i] = BoardStatuses.OCCUPIED;
                         }
                         Fleet.GetCurrentShip().IsPlaced = true;
                         ShipsPlaced++;

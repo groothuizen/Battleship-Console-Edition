@@ -8,9 +8,32 @@ using Battleship.GameObjects;
 
 namespace Battleship.Scenes
 {
-    internal class WinScene : Scene
+    internal class ResultScene : Scene
     {
-        private PlayerObject? WinningPlayer = Players.SingleOrDefault(player => player.Points == 5);
+        public ResultScene() 
+        {
+            if (WinningPlayer != null)
+            {
+                Serilog.Log.Information
+                (
+                    "#RESULT {winningPlayerName} has won! Board status end result: {boardStatus}",
+                    WinningPlayer.Name, WinningPlayer.Board.Coords
+                );
+
+                Serilog.Log.Information
+                (
+                    "#RESULT {losingPlayerName} has lost with {points} points! Board status end result: {boardStatus}",
+                    LosingPlayer.Name, LosingPlayer.Points, LosingPlayer.Board.Coords
+                );
+            }
+            else
+            {
+                Serilog.Log.Error("#WIN no winner could be found...");
+            }
+        }
+
+        private PlayerObject? WinningPlayer = Players.SingleOrDefault(player => player.HasWon());
+        private PlayerObject? LosingPlayer = Players.SingleOrDefault(player => !player.HasWon())!;
 
         private enum Options
         {

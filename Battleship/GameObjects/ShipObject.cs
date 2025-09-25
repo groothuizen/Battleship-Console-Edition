@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleship.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Battleship.GameObjects
 {
     public class ShipObject : GameObject
     {
-        public ShipObject(int size, string name, string symbol) 
+        public ShipObject(int size, string name, char symbol) 
         {
             Size = size;
             Health = size;
@@ -16,7 +17,7 @@ namespace Battleship.GameObjects
             Name = name;
             Symbol = symbol;
 
-            Positions = new int[Grid, Grid];
+            Coords = new BoardStatuses[Grid, Grid];
         }
 
         public bool IsPlaced = false;
@@ -32,13 +33,12 @@ namespace Battleship.GameObjects
         /// <summary>
         /// The symbol that gets drawn to the console.
         /// </summary>
-        public string Symbol { get; }
+        public char Symbol { get; }
 
         /// <summary>
         /// [0] = x <br/>
         /// [1] = y <br/>
-        /// 1 = occupied
         /// </summary>
-        public int[,] Positions { get; set; }
+        public BoardStatuses[,] Coords { get; set; }
     }
 }
