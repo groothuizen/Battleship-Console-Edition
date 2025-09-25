@@ -41,7 +41,7 @@ namespace SimpleLog.Builders
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath((_basePath ?? Directory.GetCurrentDirectory()))
-                .AddJsonFile((_configPath ?? @"settings\simplelogsettings.json"), optional: false, reloadOnChange: true)
+                .AddJsonFile((_configPath ?? @"appsettings.json"), optional: false, reloadOnChange: true)
                 //.AddJsonFile($@"simplelogsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
                 .Build();
 
