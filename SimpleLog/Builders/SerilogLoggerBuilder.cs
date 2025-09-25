@@ -49,22 +49,24 @@ namespace SimpleLog.Builders
                 .ReadFrom.Configuration(config)
                 .Enrich.FromLogContext();
 
-            var logMethodsSection = config.GetSection("SimpleLog:LogMethods");
+            var simpleLogSection = config.GetSection("SimpleLog");
 
-            if (logMethodsSection.GetSection("Console").GetValue<bool>("Enabled")) logger.WriteTo.Console();
+            var logMethodsSection = simpleLogSection.GetSection("LogMethods");
 
-            if (logMethodsSection.GetSection("TXT").GetValue<bool>("Enabled"))
+            if (logMethodsSection.GetValue<bool>("Console.Enabled")) logger.WriteTo.Console();
+
+            if (logMethodsSection.GetValue<bool>("TXT:Enabled"))
             {
-                string? path = logMethodsSection.GetSection("TXT")["Path"];
+                string? path = logMethodsSection.GetValue<string?>("TXT:Path");
                 if (path != null)
                 {
                     logger.WriteTo.File(path);
                 }
             }
 
-            if (logMethodsSection.GetSection("JSON").GetValue<bool>("Enabled"))
+            if (logMethodsSection.GetValue<bool>("JSON:Enabled"))
             {
-                string? path = logMethodsSection.GetSection("JSON")["Path"];
+                string? path = logMethodsSection.GetValue<string?>("JSON:Path");
                 if (path != null)
                 {
                     logger.WriteTo.File(new JsonFormatter(), path);
