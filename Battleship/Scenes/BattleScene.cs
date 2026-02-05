@@ -8,8 +8,6 @@ namespace Battleship.Scenes
         {
             Cursor.Position[0] = 0;
             Cursor.Position[1] = 0;
-
-            Serilog.Log.Information("#BATTLE starting the battle scene...");
         }
 
         private string DialogMessage = string.Empty;
@@ -40,12 +38,6 @@ namespace Battleship.Scenes
                 case ConsoleKey.A:
                     currentPlayer.Attack(targetPlayer, Cursor.Position[0], Cursor.Position[1]);
 
-                    Serilog.Log.Logger.Information
-                    (
-                        "#BATTLE: player: {attackingPlayerName} attacked -> target player: {targetPlayerName} at position: {cursorPosition} -> outcome: {attackStatus}",
-                        currentPlayer.Name, targetPlayer.Name, Cursor.Position, currentPlayer.AttackStatus
-                    );
-
                     switch (currentPlayer.AttackStatus)
                     {
                         case AttackStatuses.HIT:
@@ -69,11 +61,6 @@ namespace Battleship.Scenes
 
                     if (currentPlayer.HasWon())
                     {
-                        Serilog.Log.Information
-                        (
-                            "#BATTLE {playerName} has sunk all of {targetPlayer}'s ships!", 
-                            currentPlayer.Name, targetPlayer.Name
-                        );
                         RequestedScene = new ResultScene();
                     }
 

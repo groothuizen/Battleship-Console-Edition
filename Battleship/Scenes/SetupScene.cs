@@ -10,11 +10,6 @@ namespace Battleship.Scenes
             {
                 player.Reset();
             }
-
-            Serilog.Log.Information
-            (
-                "#SETUP starting the setup scene..."
-            );
         }
 
         private string DialogMessage = string.Empty;
@@ -56,12 +51,6 @@ namespace Battleship.Scenes
                     currentPlayer.PlaceShip(Cursor.Position[0], Cursor.Position[1], out bool placed);
                     if (placed)
                     {
-                        Serilog.Log.Information
-                        (
-                            "#SETUP player: {playerName} placed a ship at coordinates: {shipCoordinates}",
-                            currentPlayer.Name, currentPlayer.Fleet.GetCurrentShip().Coords
-                        );
-
                         if (currentPlayer.ShipsPlaced < currentPlayer.Fleet.Ships.Length)
                         {
                             currentPlayer.Fleet.ShiftShipPointer();
@@ -73,12 +62,6 @@ namespace Battleship.Scenes
                         }
                         else
                         {
-                            Serilog.Log.Information
-                            (
-                                "#SETUP player: {playerName} has placed all their ships! {playerName}'s board status: {boardStatus}",
-                                currentPlayer.Name, currentPlayer.Name, currentPlayer.Board.Coords
-                            );
-
                             SwitchPlayers();
                         }
                     }

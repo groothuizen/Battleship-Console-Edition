@@ -1,6 +1,4 @@
-﻿using SimpleLog;
-
-using Battleship.Handlers;
+﻿using Battleship.Handlers;
 using Battleship.Scenes;
 
 namespace Battleship
@@ -9,8 +7,6 @@ namespace Battleship
     {
         public static void Main(string[] args)
         {
-            LogService.StartSerilog();
-
             SceneHandler sceneHandler = new();
 
             sceneHandler.Start(new TitleScene());
