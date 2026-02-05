@@ -17,7 +17,7 @@ namespace Battleship.Scenes
             Width = (Grid + 1) * GridGapX;
             Height = (Grid + 1) * GridGapY;
 
-            Console.SetWindowSize(Width + 60, Height);
+            Console.SetWindowSize(Width + 60, Height); // Now redundant in Windows 11 terminal.
         }
 
         // ===== Static Game Objects =====
