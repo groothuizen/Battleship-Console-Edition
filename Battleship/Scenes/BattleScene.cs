@@ -1,10 +1,4 @@
 ﻿using Battleship.Enums;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Battleship.Scenes
 {
@@ -12,7 +6,6 @@ namespace Battleship.Scenes
     {
         public BattleScene() 
         {
-            Cursor.Symbol = "";
             Cursor.Position[0] = 0;
             Cursor.Position[1] = 0;
         }
@@ -68,7 +61,7 @@ namespace Battleship.Scenes
 
                     if (currentPlayer.HasWon())
                     {
-                        RequestedScene = new WinScene();
+                        RequestedScene = new ResultScene();
                     }
 
                     currentPlayer.AttackStatus = AttackStatuses.STANDBY;

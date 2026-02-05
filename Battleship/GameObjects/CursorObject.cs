@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Battleship.Enums;
+﻿using Battleship.Enums;
 
 namespace Battleship.GameObjects
 {
     public class CursorObject : GameObject
     {
-        public string Symbol = String.Empty;
-
         /// <summary>
         /// [0] = x,
         /// [1] = y

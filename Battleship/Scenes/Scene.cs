@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Battleship.GameObjects;
+﻿using Battleship.GameObjects;
 using Battleship.Handlers;
 using Battleship.Interfaces;
 
@@ -17,7 +11,7 @@ namespace Battleship.Scenes
     {
         public Scene() 
         {
-            Grid = ConfigHandler.GetInt("Grid");
+            Grid = ConfigHandler.GetValue<int>("Board:Grid");
             GridGapX = Grid;
             GridGapY = Grid / 2;
             Width = (Grid + 1) * GridGapX;

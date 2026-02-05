@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Battleship.Enums;
+﻿using Battleship.Enums;
 
 namespace Battleship.Scenes
 {
@@ -25,45 +19,45 @@ namespace Battleship.Scenes
         public override void Update()
         {
             DialogMessage = String.Empty;
-            var CurrentPlayer = Players[(int)PlayerTurn];
+            var currentPlayer = Players[(int)PlayerTurn];
 
             switch (KeyboardHandler.RequestInput())
             {
                 case ConsoleKey.UpArrow:
-                    if (CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1] - 1))
+                    if (currentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1] - 1))
                     {
                         Cursor.Move("up");
                     }
                     break;
                 case ConsoleKey.RightArrow:
-                    if (CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0] + 1, Cursor.Position[1]))
+                    if (currentPlayer.Fleet.ShipInBounds(Cursor.Position[0] + 1, Cursor.Position[1]))
                     {
                         Cursor.Move("right");
                     }
                     break;
                 case ConsoleKey.DownArrow:
-                    if (CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1] + 1))
+                    if (currentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1] + 1))
                     {
                         Cursor.Move("down");
                     }
                     break;
                 case ConsoleKey.LeftArrow:
-                    if (CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0] - 1, Cursor.Position[1]))
+                    if (currentPlayer.Fleet.ShipInBounds(Cursor.Position[0] - 1, Cursor.Position[1]))
                     {
                         Cursor.Move("left");
                     }
                     break;
                 case ConsoleKey.A:
-                    CurrentPlayer.PlaceShip(Cursor.Position[0], Cursor.Position[1], out bool placed);
+                    currentPlayer.PlaceShip(Cursor.Position[0], Cursor.Position[1], out bool placed);
                     if (placed)
                     {
-                        if (CurrentPlayer.ShipsPlaced < CurrentPlayer.Fleet.Ships.Length)
+                        if (currentPlayer.ShipsPlaced < currentPlayer.Fleet.Ships.Length)
                         {
-                            CurrentPlayer.Fleet.ShiftShipPointer();
+                            currentPlayer.Fleet.ShiftShipPointer();
 
-                            if (!CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
+                            if (!currentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
                             {
-                                Cursor.PushCursorInBounds(CurrentPlayer.Fleet.Rotation, CurrentPlayer.Fleet.GetCurrentShip().Size);
+                                Cursor.PushCursorInBounds(currentPlayer.Fleet.Rotation, currentPlayer.Fleet.GetCurrentShip().Size);
                             }
                         }
                         else
@@ -77,30 +71,30 @@ namespace Battleship.Scenes
                     }
                     break;
                 case ConsoleKey.S:
-                    CurrentPlayer.Fleet.ShiftShipPointer();
+                    currentPlayer.Fleet.ShiftShipPointer();
 
-                    if (!CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
+                    if (!currentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
                     {
-                        Cursor.PushCursorInBounds(CurrentPlayer.Fleet.Rotation, CurrentPlayer.Fleet.GetCurrentShip().Size);
+                        Cursor.PushCursorInBounds(currentPlayer.Fleet.Rotation, currentPlayer.Fleet.GetCurrentShip().Size);
                     }
                     break;
                 case ConsoleKey.D:
-                    CurrentPlayer.Fleet.Rotate();
+                    currentPlayer.Fleet.Rotate();
 
-                    if (!CurrentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
+                    if (!currentPlayer.Fleet.ShipInBounds(Cursor.Position[0], Cursor.Position[1]))
                     {
-                        Cursor.PushCursorInBounds(CurrentPlayer.Fleet.Rotation, CurrentPlayer.Fleet.GetCurrentShip().Size);
+                        Cursor.PushCursorInBounds(currentPlayer.Fleet.Rotation, currentPlayer.Fleet.GetCurrentShip().Size);
                     }
                     break;
                 case ConsoleKey.R:
-                    CurrentPlayer.Reset();
+                    currentPlayer.Reset();
                     break;
             }
         }
 
         public override void Draw()
         {
-            var CurrentPlayer = Players[(int)PlayerTurn];
+            var currentPlayer = Players[(int)PlayerTurn];
 
             for (int y = 1; y < Height; y++) // starts counting at 1 to avoid dividing by 0
             {
@@ -129,9 +123,9 @@ namespace Battleship.Scenes
                             {
                                 // ===== Ship Symbol =====
 
-                                if (CurrentPlayer.Board.Coords[x / GridGapX - 1, y / GridGapY - 1] == BoardStatuses.OCCUPIED)
+                                if (currentPlayer.Board.Coords[x / GridGapX - 1, y / GridGapY - 1] == BoardStatuses.OCCUPIED)
                                 {
-                                    var ship = CurrentPlayer.Fleet.FindShipFromPosition(x / GridGapX - 1, y / GridGapY - 1);
+                                    var ship = currentPlayer.Fleet.FindShipFromPosition(x / GridGapX - 1, y / GridGapY - 1);
 
                                     if (ship != null)
                                     {
@@ -146,7 +140,7 @@ namespace Battleship.Scenes
                                 {
                                     // ===== Cursor Symbol =====
 
-                                    switch (CurrentPlayer.Fleet.Rotation)
+                                    switch (currentPlayer.Fleet.Rotation)
                                     {
                                         case Rotations.HORIZONTAL:
                                             if (Cursor.Position[1] + 1 == y / GridGapY)
@@ -157,14 +151,10 @@ namespace Battleship.Scenes
                                                     ||
                                                     x / GridGapX > Cursor.Position[0] + 1
                                                     &&
-                                                    x / GridGapX <= Cursor.Position[0] + 1 + (CurrentPlayer.Fleet.GetCurrentShip().Size - 1)
+                                                    x / GridGapX <= Cursor.Position[0] + 1 + (currentPlayer.Fleet.GetCurrentShip().Size - 1)
                                                 )
                                                 {
-                                                    if (CurrentPlayer.Fleet.GetCurrentShip().Symbol != String.Empty)
-                                                    {
-                                                        Console.Write(CurrentPlayer.Fleet.GetCurrentShip().Symbol);
-                                                    }
-                                                    else Console.Write("~");
+                                                    Console.Write(currentPlayer.Fleet.GetCurrentShip().Symbol);
                                                 }
                                                 else Console.Write("~");
                                             }
@@ -179,14 +169,10 @@ namespace Battleship.Scenes
                                                     ||
                                                     y / GridGapY > Cursor.Position[1] + 1
                                                     &&
-                                                    y / GridGapY <= Cursor.Position[1] + 1 + (CurrentPlayer.Fleet.GetCurrentShip().Size - 1)
+                                                    y / GridGapY <= Cursor.Position[1] + 1 + (currentPlayer.Fleet.GetCurrentShip().Size - 1)
                                                 )
                                                 {
-                                                    if (CurrentPlayer.Fleet.GetCurrentShip().Symbol != String.Empty)
-                                                    {
-                                                        Console.Write(CurrentPlayer.Fleet.GetCurrentShip().Symbol);
-                                                    }
-                                                    else Console.Write("~");
+                                                    Console.Write(currentPlayer.Fleet.GetCurrentShip().Symbol);
                                                 }
                                                 else Console.Write("~");
                                             }
@@ -205,7 +191,7 @@ namespace Battleship.Scenes
                                 (x - 1) % GridGapX == 0
                             )
                             {
-                                switch (CurrentPlayer.Fleet.Rotation)
+                                switch (currentPlayer.Fleet.Rotation)
                                 {
                                     case Rotations.HORIZONTAL:
                                         if (Cursor.Position[1] + 1 == y / GridGapY)
@@ -216,7 +202,7 @@ namespace Battleship.Scenes
                                                 ||
                                                 Math.Round(new decimal(x) / GridGapX) > Cursor.Position[0] + 1
                                                 &&
-                                                Math.Round(new decimal(x) / GridGapX) <= Cursor.Position[0] + 1 + (CurrentPlayer.Fleet.GetCurrentShip().Size - 1)
+                                                Math.Round(new decimal(x) / GridGapX) <= Cursor.Position[0] + 1 + (currentPlayer.Fleet.GetCurrentShip().Size - 1)
                                             )
                                             {
                                                 Console.Write("|");
@@ -234,7 +220,7 @@ namespace Battleship.Scenes
                                                 ||
                                                 y / GridGapY > Cursor.Position[1] + 1
                                                 &&
-                                                y / GridGapY <= Cursor.Position[1] + 1 + (CurrentPlayer.Fleet.GetCurrentShip().Size - 1)
+                                                y / GridGapY <= Cursor.Position[1] + 1 + (currentPlayer.Fleet.GetCurrentShip().Size - 1)
                                             )
                                             {
                                                 Console.Write("|");
@@ -281,10 +267,10 @@ namespace Battleship.Scenes
                     switch (y - DialogStartPosition) // case value is the y coordinate inside the dialog content
                     {
                         case 2:
-                            Console.Write(WhitespaceAround($"Current Turn: {CurrentPlayer.Name}", DialogWidth));
+                            Console.Write(WhitespaceAround($"Current Turn: {currentPlayer.Name}", DialogWidth));
                             break;
                         case 3:
-                            Console.Write(WhitespaceAround($"Current Ship: {CurrentPlayer.Fleet.GetCurrentShip().Name} ({CurrentPlayer.Fleet.GetCurrentShip().Symbol}), Size: {CurrentPlayer.Fleet.GetCurrentShip().Size}", DialogWidth));
+                            Console.Write(WhitespaceAround($"Current Ship: {currentPlayer.Fleet.GetCurrentShip().Name} ({currentPlayer.Fleet.GetCurrentShip().Symbol}), Size: {currentPlayer.Fleet.GetCurrentShip().Size}", DialogWidth));
                             break;
                         case 5:
                             Console.Write(WhitespaceAround(((DialogMessage != String.Empty) ? $"{DialogMessage}" : ""), DialogWidth));
@@ -322,7 +308,6 @@ namespace Battleship.Scenes
             if (PlayerTurn == PlayerTurnStates.PLAYER1)
             {
                 PlayerTurn = PlayerTurnStates.PLAYER2;
-                Cursor.Symbol = Players[(int)PlayerTurn].Fleet.GetCurrentShip().Symbol;
             }
             else if (PlayerTurn == PlayerTurnStates.PLAYER2)
             {

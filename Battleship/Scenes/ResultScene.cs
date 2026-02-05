@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Battleship.GameObjects;
+﻿using Battleship.GameObjects;
 
 namespace Battleship.Scenes
 {
-    internal class WinScene : Scene
+    internal class ResultScene : Scene
     {
-        private PlayerObject? WinningPlayer = Players.SingleOrDefault(player => player.Points == 5);
+        private PlayerObject? WinningPlayer = Players.SingleOrDefault(player => player.HasWon());
+        private PlayerObject? LosingPlayer = Players.SingleOrDefault(player => !player.HasWon())!;
 
         private enum Options
         {
