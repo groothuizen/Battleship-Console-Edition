@@ -49,7 +49,7 @@ namespace Battleship.Scenes
         public void Terminate() => IsAlive = false;
 
         /// <summary>
-        /// Requests a given scene and the scene handler notices this change.
+        /// Requests a given scene, which is handled by the scene handler.
         /// </summary>
         public Scene? RequestedScene { get; set; }
 
